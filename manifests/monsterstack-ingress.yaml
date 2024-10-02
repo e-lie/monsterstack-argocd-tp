@@ -9,10 +9,10 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
-    - monsterstack.elie.formation.dopl.uk
+    - monsterstackargo.elie.formation.dopl.uk
     secretName: monsterstack-cert-secret 
   rules:
-    - host: monsterstack.elie.formation.dopl.uk # à changer si envie/besoin
+    - host: monsterstackargo.elie.formation.dopl.uk # à changer si envie/besoin
       http:
         paths:
           - path: /
