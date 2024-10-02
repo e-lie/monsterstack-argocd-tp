@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  labels:
+    app: monsterstack
+spec:
+  ports:
+    - port: 6379  # port exposé en entrée par le service
+      targetPort: redis # port coté conteneur
+  selector:
+    app: monsterstack # kubernetes.io/name: 
+    partie: redis # kubernetes.io/component: 
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  labels:
+    app: monsterstack
+    partie: redis
+spec:
+  selector:
+    matchLabels:
+      app: monsterstack
+      partie: redis
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: monsterstack
+        partie: redis
+        labelenplus: valeur
+    spec:
+      containers:
+        - image: redis
+          name: redis
+          ports:
+            - containerPort: 6379
+              name: redis
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+      volumes:
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: redis-data
